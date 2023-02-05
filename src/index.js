@@ -1,17 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import ServiceWrapper from "./API/ApiWrapper";
+import App from "./App";
+import "./index.css";
+import { ChakraProvider } from "@chakra-ui/react";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const _serviceWrapper = new ServiceWrapper(),
+  KEY = "BG";
+if (!_serviceWrapper.getWithExpiry(KEY)) {
+  _serviceWrapper.request({ url: "/photos/random" }).then((oResponse) => {
+    _serviceWrapper.setWithExpiry(KEY, oResponse.urls.full, 60000);
+    _serviceWrapper.setBackground(KEY);
+  });
+} else {
+  _serviceWrapper.setBackground(KEY);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

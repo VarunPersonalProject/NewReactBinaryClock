@@ -1,23 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import MidSection from "./Components/MidSection";
+import "./App.css";
+import BeginSection from "./Components/BeginSection";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="Begin">
+        <BeginSection />
+      </div>
+      <div className="Mid">
+        <MidSection />
+      </div>
+
+      <div className="End"></div>
     </div>
   );
 }

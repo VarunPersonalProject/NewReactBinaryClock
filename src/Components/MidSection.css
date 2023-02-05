@@ -1,0 +1,32 @@
+.MidBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.MidBody__Top {
+  flex: 1;
+}
+
+.MidBody__Center {
+  flex: 2;
+}
+.MidBody__Center__Clock {
+  display: flex;
+  justify-content: center;
+}
+
+.MidBody__Center__Clock__Column {
+  display: flex;
+  flex-direction: column;
+}
+
+.MidBody__Center__Clock__Time {
+  margin-left: 1rem;
+}
+
+.MidBody__Bottom {
+  display: flex;
+  justify-content: center;
+}
