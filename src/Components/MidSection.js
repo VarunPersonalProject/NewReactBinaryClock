@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MidSection.css";
 
 function ColumnBuilder({ binary, rows }) {
@@ -41,7 +41,9 @@ function NumberToBinary(num) {
 }
 
 export default function MidSection() {
-  const [oBinary, setBinary] = useState({});
+  const [oBinary, setBinary] = useState({}),
+    [sGreeting, setGreeting] = useState(""),
+    nHours = new Date().getHours();
   setInterval(() => {
     const aNow = new Date().toTimeString().slice(0, 8).replace(/:/g, "");
     setBinary({
@@ -53,6 +55,16 @@ export default function MidSection() {
       secondOnce: NumberToBinary(aNow[5]),
     });
   }, 1000);
+
+  useEffect(() => {
+    if (nHours > 5 && nHours < 12) {
+      setGreeting("Good Morning");
+    } else if (nHours > 12 && nHours < 16) {
+      setGreeting("Good Afternoon");
+    } else {
+      setGreeting("Good Evening");
+    }
+  }, [nHours]);
 
   return (
     <div className="MidBody">
@@ -66,7 +78,7 @@ export default function MidSection() {
           <ColumnBuilder binary={oBinary.secondTenths} rows={4} />
           <ColumnBuilder binary={oBinary.secondOnce} rows={4} />
         </div>
-        <div>Good Evening, Varun Gaikwad</div>
+        <div>{sGreeting}, Varun Gaikwad</div>
       </div>
       <div className="MidBody__Bottom">Motivation Qoute</div>
     </div>

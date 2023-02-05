@@ -8,7 +8,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 const _serviceWrapper = new ServiceWrapper(),
   KEY = "BG";
 if (!_serviceWrapper.getWithExpiry(KEY)) {
-  _serviceWrapper.request({ url: "/photos/random" }).then((oResponse) => {
+  _serviceWrapper.imgRequest({ url: "/photos/random" }).then((oResponse) => {
     _serviceWrapper.setWithExpiry(KEY, oResponse.urls.full, 60000);
     _serviceWrapper.setBackground(KEY);
   });

@@ -4,13 +4,18 @@ let ACCESS_KEY = "zI7te_x9ps0qObBNww-DA65hyMopoXrRCWN_hiRFSE4",
    * */
   BASEURL = "https://api.unsplash.com",
   isMOBILE = /Android|iPhone/.test(navigator.userAgent);
+
 class ServiceWrapper {
-  request({ url }) {
-    return fetch(
-      `${BASEURL}${url}?query=Animals&orientation=${
+  imgRequest({ url }) {
+    return this.request({
+      url: `${BASEURL}${url}?query=Animals&orientation=${
         isMOBILE ? "squarish" : "landscape"
-      }&client_id=${ACCESS_KEY}`
-    ).then((oResponse) => oResponse.json());
+      }&client_id=${ACCESS_KEY}`,
+    }).then((oResponse) => oResponse.json());
+  }
+
+  request({ url }) {
+    return fetch(url);
   }
 
   setWithExpiry(sKey, sValue, nExtra) {
@@ -37,9 +42,11 @@ class ServiceWrapper {
   }
 
   setBackground(sKey) {
-    const sLink = this.getWithExpiry(sKey);
+    const sLink = this.getWithExpiry(sKey),
+      oStyle = document.body.style;
 
-    document.body.style.backgroundImage = `url('${sLink}')`;
+    oStyle.backgroundImage = `url('${sLink}')`;
+    oStyle.backgroundSize = "cover";
   }
 }
 export default ServiceWrapper;
