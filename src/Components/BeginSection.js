@@ -1,14 +1,25 @@
 import {
-  IconButton,
-  Image,
+  Button,
+  ButtonGroup,
+  FormControl,
+  FormLabel,
   Input,
   InputGroup,
   InputLeftElement,
+  Link,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  PopoverHeader,
+  PopoverTrigger,
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import "./BeginSection.css";
 import { Search2Icon } from "@chakra-ui/icons";
-import ServiceWrapper from "../API/ApiWrapper";
 
 export default function BeginSection() {
   const handleEnter = (oEvent) => {
@@ -20,13 +31,10 @@ export default function BeginSection() {
       setInputValue(oEvent.target.value);
     },
     [inputValue, setInputValue] = useState(""),
-    _apiService = new ServiceWrapper();
+    { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
     <div className="BeginSection">
-      <div>
-        <AppIcon />
-      </div>
       <InputGroup width={250} className="BeginSection__Input">
         <InputLeftElement
           pointerEvents="none"
@@ -39,21 +47,39 @@ export default function BeginSection() {
           variant="flushed"
           placeholder="Search..."
         />
-      </InputGroup>
+      </InputGroup>{" "}
+      <div>
+        <Link onClick={onToggle} className="BeginSection__Link">
+          Add Links
+        </Link>
+        <Popover
+          className="PopUp"
+          returnFocusOnClose={false}
+          isOpen={isOpen}
+          onClose={onClose}
+          placement="bottom-start"
+          closeOnBlur={true}
+        >
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverBody>
+              <FormControl>
+                <FormLabel>Email address</FormLabel>
+                <Input />
+              </FormControl>
+            </PopoverBody>
+            <PopoverFooter display="flex" justifyContent="flex-end">
+              <ButtonGroup size="sm">
+                <Button onClick={onClose} variant="outline">
+                  Cancel
+                </Button>
+                <Button colorScheme="red">Apply</Button>
+              </ButtonGroup>
+            </PopoverFooter>
+          </PopoverContent>
+        </Popover>
+      </div>
     </div>
-  );
-}
-
-function AppIcon() {
-  return (
-    <IconButton
-      colorScheme="blue"
-      icon={
-        <Image
-          width={10}
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK5q0FP74VV9wbfwP378_7kj7iDomHuKrxkXsxDdUT28V9dlVMNUe-EMzaLwaFhneeuZI&usqp=CAU"
-        />
-      }
-    />
   );
 }

@@ -6,7 +6,8 @@ import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 
 const _serviceWrapper = new ServiceWrapper(),
-  KEY = "BG";
+  KEY = "BG",
+  oRoot = ReactDOM.createRoot(document.getElementById("root"));
 if (!_serviceWrapper.getWithExpiry(KEY)) {
   _serviceWrapper.imgRequest({ url: "/photos/random" }).then((oResponse) => {
     _serviceWrapper.setWithExpiry(KEY, oResponse.urls.full, 60000);
@@ -16,7 +17,7 @@ if (!_serviceWrapper.getWithExpiry(KEY)) {
   _serviceWrapper.setBackground(KEY);
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+oRoot.render(
   <React.StrictMode>
     <ChakraProvider>
       <App />

@@ -1,7 +1,18 @@
 .BeginSection {
+  padding: 1rem;
   display: flex;
+  flex-direction: column;
+}
+
+.BeginSection__Link {
+  color: snow;
+  font-size: 1rem;
 }
 
 .BeginSection__Input {
   width: 1rme;
+}
+
+.PopUp {
+  color: black;
 }
