@@ -16,10 +16,7 @@ class ServiceWrapper {
   }
 
   iconRequest({ url }) {
-    return this.request({
-      url: `${ICON_BASEURL}/ip2/${url.host.slice(4)}.ico`,
-      mode: "no-cors",
-    }).then((oResponse) => oResponse.blob());
+    return `${ICON_BASEURL}/ip2/${url.host.split(".").slice(1).join(".")}.ico`;
   }
 
   request({ url, mode }) {

@@ -3,10 +3,11 @@ import {
   ButtonGroup,
   FormControl,
   FormLabel,
+  IconButton,
+  Image,
   Input,
   InputGroup,
   InputLeftElement,
-  Link,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -15,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import "./BeginSection.css";
-import { Search2Icon } from "@chakra-ui/icons";
+import { AddIcon, Search2Icon } from "@chakra-ui/icons";
 import ServiceWrapper from "../API/ApiWrapper";
 
 export default function BeginSection() {
@@ -25,6 +26,9 @@ export default function BeginSection() {
       }
     },
     _serviceWrapper = new ServiceWrapper(),
+    [links, setLinks] = useState(
+      JSON.parse(_serviceWrapper.getStorage("links") || "[]")
+    ),
     handleChange = (oEvent) => {
       setInputValue(oEvent.target.value);
     },
@@ -35,24 +39,28 @@ export default function BeginSection() {
     handleAddURL = () => {
       try {
         const inputValue = inputRef.current.value,
-          url = new URL(inputValue),
-          aLink = _serviceWrapper.getStorage("LINK") || [];
-        _serviceWrapper.iconRequest({ url }).then((oResponse) => {
-          const imgURL = URL.createObjectURL(oResponse);
-          if (aLink.find((oItem) => oItem.host.indexOf(url.host) === -1)) {
-            aLink.push({
-              host: url.host,
-              link: imgURL,
-            });
-            _serviceWrapper.setStorage("LINK", aLink);
-          } else {
-            alert("Link already exists.");
-          }
-        });
+          url = new URL(inputValue);
+        if (!links.find((oItem) => oItem.host.indexOf(url.host) > -1)) {
+          links.push({
+            host: url,
+            link: _serviceWrapper.iconRequest({ url }),
+          });
+          setLinks(links);
+          _serviceWrapper.setStorage("links", JSON.stringify(links));
+          onClose();
+        } else {
+          alert("Link already exists.");
+        }
       } catch (eResponse) {
         setIsInputValid(true);
         inputRef.current.value = "";
       }
+    },
+    handleRedirect = (oEvent) => {
+      const anchor = document.createElement("a");
+      anchor.href = oEvent.target.parentElement.ariaLabel;
+      anchor.target = "_blank";
+      anchor.click();
     };
 
   return (
@@ -69,11 +77,26 @@ export default function BeginSection() {
           variant="flushed"
           placeholder="Search..."
         />
-      </InputGroup>{" "}
-      <div>
-        <Link onClick={onToggle} className="BeginSection__Link">
-          Add Links
-        </Link>
+      </InputGroup>
+      <div className="BeginSection__IconSection">
+        <IconButton
+          onClick={onToggle}
+          variant="solid"
+          colorScheme="linkedin"
+          aria-label="Add"
+          fontSize="20px"
+          icon={<AddIcon />}
+        />
+        {links.map((oItem, nIndex) => (
+          <IconButton
+            key={nIndex}
+            variant="solid"
+            aria-label={oItem.host}
+            onClick={handleRedirect}
+            fontSize="20px"
+            icon={<Image src={oItem.link} />}
+          />
+        ))}
         <Popover
           className="PopUp"
           returnFocusOnClose={false}

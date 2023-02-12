@@ -6,7 +6,7 @@ import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 
 const _serviceWrapper = new ServiceWrapper(),
-  KEY = "BG",
+  KEY = "background",
   oRoot = ReactDOM.createRoot(document.getElementById("root"));
 if (!_serviceWrapper.getWithExpiry(KEY)) {
   _serviceWrapper.imgRequest({ url: "/photos/random" }).then((oResponse) => {

@@ -16,3 +16,13 @@
 .PopUp > * {
   color: black;
 }
+
+.BeginSection__IconSection {
+  display: flex;
+  width: 30px;
+  flex-direction: column;
+}
+
+.BeginSection__IconSection > * {
+  margin-top: 0.5rem;
+}
