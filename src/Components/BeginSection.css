@@ -13,6 +13,6 @@
   width: 1rme;
 }
 
-.PopUp {
+.PopUp > * {
   color: black;
 }

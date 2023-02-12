@@ -16,9 +16,8 @@ class ServiceWrapper {
   }
 
   iconRequest({ url }) {
-    url = url.match(/\D*.com/g).toString();
     return this.request({
-      url: `${ICON_BASEURL}/ip2/${url}.ico`,
+      url: `${ICON_BASEURL}/ip2/${url.host.slice(4)}.ico`,
       mode: "no-cors",
     }).then((oResponse) => oResponse.blob());
   }
@@ -33,11 +32,11 @@ class ServiceWrapper {
         value: sValue,
         expiry: dNow.getTime() + nExtra,
       };
-    localStorage.setItem(sKey, JSON.stringify(oItem));
+    this.setStorage(sKey, JSON.stringify(oItem));
   }
 
   getWithExpiry(sKey) {
-    const sItemStr = localStorage.getItem(sKey);
+    const sItemStr = this.getStorage(sKey);
     if (!sItemStr) {
       return null;
     }
@@ -48,6 +47,14 @@ class ServiceWrapper {
       return null;
     }
     return oItem.value;
+  }
+
+  setStorage(sKey, sValue) {
+    localStorage.setItem(sKey, sValue);
+  }
+
+  getStorage(sKey) {
+    return localStorage.getItem(sKey);
   }
 
   setBackground(sKey) {

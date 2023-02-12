@@ -8,18 +8,15 @@ import {
   InputLeftElement,
   Link,
   Popover,
-  PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
   PopoverFooter,
-  PopoverHeader,
-  PopoverTrigger,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./BeginSection.css";
 import { Search2Icon } from "@chakra-ui/icons";
+import ServiceWrapper from "../API/ApiWrapper";
 
 export default function BeginSection() {
   const handleEnter = (oEvent) => {
@@ -27,11 +24,36 @@ export default function BeginSection() {
         window.location.href = `https://www.google.com/search?q=${inputValue}`;
       }
     },
+    _serviceWrapper = new ServiceWrapper(),
     handleChange = (oEvent) => {
       setInputValue(oEvent.target.value);
     },
     [inputValue, setInputValue] = useState(""),
-    { isOpen, onToggle, onClose } = useDisclosure();
+    inputRef = useRef(),
+    [isInputValid, setIsInputValid] = useState(false),
+    { isOpen, onToggle, onClose } = useDisclosure(),
+    handleAddURL = () => {
+      try {
+        const inputValue = inputRef.current.value,
+          url = new URL(inputValue),
+          aLink = _serviceWrapper.getStorage("LINK") || [];
+        _serviceWrapper.iconRequest({ url }).then((oResponse) => {
+          const imgURL = URL.createObjectURL(oResponse);
+          if (aLink.find((oItem) => oItem.host.indexOf(url.host) === -1)) {
+            aLink.push({
+              host: url.host,
+              link: imgURL,
+            });
+            _serviceWrapper.setStorage("LINK", aLink);
+          } else {
+            alert("Link already exists.");
+          }
+        });
+      } catch (eResponse) {
+        setIsInputValid(true);
+        inputRef.current.value = "";
+      }
+    };
 
   return (
     <div className="BeginSection">
@@ -56,25 +78,41 @@ export default function BeginSection() {
           className="PopUp"
           returnFocusOnClose={false}
           isOpen={isOpen}
-          onClose={onClose}
-          placement="bottom-start"
+          onClose={() => {
+            inputRef.current.value = "";
+            setIsInputValid(false);
+            onClose(...arguments);
+          }}
           closeOnBlur={true}
         >
           <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
             <PopoverBody>
               <FormControl>
-                <FormLabel>Email address</FormLabel>
-                <Input />
+                <FormLabel>Enter URL.</FormLabel>
+                <Input
+                  isInvalid={isInputValid}
+                  errorBorderColor="crimson"
+                  ref={inputRef}
+                  autoComplete="off"
+                />
               </FormControl>
             </PopoverBody>
             <PopoverFooter display="flex" justifyContent="flex-end">
               <ButtonGroup size="sm">
-                <Button onClick={onClose} variant="outline">
+                <Button
+                  colorScheme="whatsapp"
+                  onClick={onClose}
+                  variant="outline"
+                >
                   Cancel
                 </Button>
-                <Button colorScheme="red">Apply</Button>
+                <Button
+                  onClick={handleAddURL}
+                  variant="outline"
+                  colorScheme="facebook"
+                >
+                  Submit
+                </Button>
               </ButtonGroup>
             </PopoverFooter>
           </PopoverContent>
