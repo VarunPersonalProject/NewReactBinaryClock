@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Unbounded&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 html {
   height: 100%;
 }
@@ -9,6 +9,6 @@ body {
   font-family: Helvetica, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: "Unbounded" !important;
+  font-family: "Rubik", sans-serif !important;
   font-size: 1.5rem;
 }

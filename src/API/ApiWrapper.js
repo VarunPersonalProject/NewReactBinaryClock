@@ -4,12 +4,15 @@ const ACCESS_KEY = "zI7te_x9ps0qObBNww-DA65hyMopoXrRCWN_hiRFSE4",
    * */
   UNSPLASH_BASEURL = "https://api.unsplash.com",
   ICON_BASEURL = "https://icons.duckduckgo.com",
-  isMOBILE = /Android|iPhone/.test(navigator.userAgent);
+  isMOBILE = /Android|iPhone/.test(navigator.userAgent),
+  QUERY = localStorage.getItem("QUERY") || "SNOW";
+
+localStorage.setItem("QUERY", QUERY);
 
 class ServiceWrapper {
   imgRequest({ url }) {
     return this.request({
-      url: `${UNSPLASH_BASEURL}${url}?query=Animals&orientation=${
+      url: `${UNSPLASH_BASEURL}${url}?query=${QUERY}&orientation=${
         isMOBILE ? "squarish" : "landscape"
       }&client_id=${ACCESS_KEY}`,
     }).then((oResponse) => oResponse.json());

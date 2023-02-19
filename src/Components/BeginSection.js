@@ -17,7 +17,7 @@ import {
 import React, { useRef, useState } from "react";
 import "./BeginSection.css";
 import { AddIcon, Search2Icon } from "@chakra-ui/icons";
-import ServiceWrapper from "../API/ApiWrapper";
+import ServiceWrapper from "../api/ApiWrapper";
 
 export default function BeginSection() {
   const handleEnter = (oEvent) => {
@@ -42,11 +42,12 @@ export default function BeginSection() {
           url = new URL(inputValue);
         if (!links.find((oItem) => oItem.host.indexOf(url.host) > -1)) {
           links.push({
-            host: url,
+            host: url.href,
             link: _serviceWrapper.iconRequest({ url }),
           });
           setLinks(links);
           _serviceWrapper.setStorage("links", JSON.stringify(links));
+          inputRef.current.value = "";
           onClose();
         } else {
           alert("Link already exists.");

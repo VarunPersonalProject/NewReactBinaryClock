@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./MidSection.css";
+import activeShape from "../assets/active.svg";
+import inactiveShape from "../assets/inactive.svg";
 
 function ColumnBuilder({ binary, rows }) {
   return binary ? (
@@ -26,9 +28,13 @@ function ColumnBuilder({ binary, rows }) {
 
 function Circle({ active, visible }) {
   return (
-    <svg visibility={visible ? "none" : "hidden"} width="50" height="50">
-      <circle cx="25" cy="25" r="15" fill={active ? "#FFFBF5" : "#20262E"} />
-    </svg>
+    <img
+      style={{ visibility: visible ? "visible" : "hidden" }}
+      height={50}
+      width={50}
+      src={active ? activeShape : inactiveShape}
+      alt="shape"
+    />
   );
 }
 
@@ -78,9 +84,10 @@ export default function MidSection() {
           <ColumnBuilder binary={oBinary.secondTenths} rows={4} />
           <ColumnBuilder binary={oBinary.secondOnce} rows={4} />
         </div>
-        <div>{sGreeting}, Varun Gaikwad</div>
+        <div style={{ visibility: sGreeting.length ? "visible" : "hidden" }}>
+          {sGreeting}, Varun Gaikwad
+        </div>
       </div>
-      <div className="MidBody__Bottom">Motivation Qoute</div>
     </div>
   );
 }

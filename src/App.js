@@ -1,6 +1,6 @@
-import MidSection from "./Components/MidSection";
+import MidSection from "./components/MidSection";
 import "./App.css";
-import BeginSection from "./Components/BeginSection";
+import BeginSection from "./components/BeginSection";
 
 function App() {
   return (
